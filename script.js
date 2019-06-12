@@ -12,12 +12,12 @@ fetch("http://localhost:9000/match", {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    'label': "game de l'ambiance",
-    'players': [{'id': 'player1'},{'id': 'player2'}],
+    'playersId': ['player_edfebb2b-1bfc-44da-a1fc-2dfd7803f3e9', 'player_fff2f0a0-33cf-4f8b-b90d-f5161dd16ef2'],
     'size': {'width': 12, 'height': 50}
   })
 })
   .then(function(response) {
+    console.log(response)
     return response.json();
   })
   .then(function(data) {
@@ -34,6 +34,22 @@ fetch("http://localhost:9000/match", {
   
     socket.onopen = function(event) {
       console.log("Connexion établie.");
+      function rotateLeftR1() {
+        socket.send(JSON.stringify({
+          'playerId': 'player_fff2f0a0-33cf-4f8b-b90d-f5161dd16ef2',
+          'action': 'rotateLeft'
+        }))
+      }
+
+      function rotateLeftR2() {
+        socket.send(JSON.stringify({
+          'playerId': 'player_edfebb2b-1bfc-44da-a1fc-2dfd7803f3e9',
+          'action': 'rotateLeft'
+        }))
+      }
+
+      setInterval(rotateLeftR1, 300);
+      setInterval(rotateLeftR2, 300)
     };
 
     socket.onclose = function(event) {
@@ -61,11 +77,10 @@ fetch("http://localhost:9000/match", {
         })
       })
     };
-    socket.send("Hello world!");
   });
 
-var W = 400, H = 800;
-var COLS = 11;
+var W = 200, H = 800;
+var COLS = 12;
 var ROWS = 50;
 var BLOCK_W = W / COLS, BLOCK_H = H / ROWS;
 
